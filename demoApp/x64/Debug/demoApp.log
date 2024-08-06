@@ -1,0 +1,16 @@
+﻿  main.cpp
+C:\d2dEngine\d2dWinApp\GameLib\Collider.h(37,49): warning C4267: '=': conversion from 'size_t' to 'unsigned int', possible loss of data
+C:\d2dEngine\d2dWinApp\GameLib\Mathf.h(9,19): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\d2dEngine\d2dWinApp\GameLib\Scene.h(56,36): warning C4311: 'type cast': pointer truncation from 'GameObject *' to 'int'
+C:\d2dEngine\d2dWinApp\GameLib\Scene.h(56,36): warning C4302: 'type cast': truncation from 'GameObject *' to 'int'
+C:\d2dEngine\d2dWinApp\GameLib\CreateComponent.h(174,26): warning C4267: '=': conversion from 'size_t' to 'unsigned int', possible loss of data
+C:\d2dEngine\d2dWinApp\GameLib\CreateComponent.h(175,65): warning C4267: 'argument': conversion from 'size_t' to 'unsigned int', possible loss of data
+C:\d2dEngine\d2dWinApp\GameLib\CreateComponent.h(175,47): warning C4267: 'argument': conversion from 'size_t' to 'unsigned int', possible loss of data
+C:\d2dEngine\d2dWinApp\GameLib\vectorMap.h(48,20): warning C4267: 'return': conversion from 'size_t' to 'unsigned int', possible loss of data
+C:\d2dEngine\d2dWinApp\GameLib\CreateComponent.h(109,49): warning C4267: '=': conversion from 'size_t' to 'unsigned int', possible loss of data
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.40.33807\include\utility(247,54): warning C4267: 'initializing': conversion from 'size_t' to '_Ty2', possible loss of data
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.40.33807\include\utility(247,54): warning C4267:         with
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.40.33807\include\utility(247,54): warning C4267:         [
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.40.33807\include\utility(247,54): warning C4267:             _Ty2=unsigned int
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.40.33807\include\utility(247,54): warning C4267:         ]
+  demoApp.vcxproj -> C:\d2dEngine\d2dWinApp\x64\Debug\demoApp.exe
