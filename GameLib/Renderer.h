@@ -15,12 +15,13 @@ private:
 	vectorMap<__int64, voidPComponent> renderComps;
 
 	Camera* pCamera;
-	Matrix tmpCamMatrix;
+	Matrix CamMatrix;
+	Matrix CamMatrixInvert;
 
 	D2D1::ColorF backgroundColor;
 
-	void AddRenderComponent(const CompIdx& idx);
-	void deleteRenderComponent(const CompIdx& idx);
+	void AddRenderComponent(const voidPComponent& idx);
+	void deleteRenderComponent(const voidPComponent& idx);
 	void SortRenderComponents();
 	void CompsClear();
 	Renderer();
@@ -54,8 +55,12 @@ public:
 	HRESULT EndDraw();
 	D2D1_WINDOW_STATE CheckWindowState();
 
+	void CalcScreenMatrix();
 	const Matrix& ScreenMatrix();
+	const Matrix& GlabalMatrix();
 	bool IsVisible(const Matrix& matrix, Shape::AABB a);
+
+	Vector2f ScreenToGlobal(Vector2f screenPos);
 
 	ID2D1Factory* m_pD2DFactory;		// D2D 개체 인터페이스 포인터 변수
 	ID2D1HwndRenderTarget* m_pRenderTarget;

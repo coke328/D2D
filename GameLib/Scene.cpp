@@ -18,12 +18,12 @@ void Scene::DeleteScene()
 GameObject* Scene::FindGameObject(std::string _name)
 {
 
-	return GameObjects.FindObject(_name);
+	return *GameObjects.FindObject(_name);
 }
 
 void Scene::Update()
 {
-	Components::GetInstance().ComponentsUpdate();
+	
 
 	for (auto gameObject : *GameObjects)
 	{

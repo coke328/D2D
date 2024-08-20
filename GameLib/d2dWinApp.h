@@ -1,5 +1,6 @@
 #pragma once
 #include "Renderer.h"
+#include "CollideManager.h"
 
 #ifndef HINST_THISCOMPONENT
 EXTERN_C IMAGE_DOS_HEADER __ImageBase;

@@ -1,11 +1,53 @@
 #pragma once
 
-typedef std::pair<unsigned int*, unsigned int> CompIdx;
+typedef std::pair<unsigned int*, unsigned int*> CompIdx;
 
 class Base;
 
 template<typename T>
 class CreateComponent;
+
+class Physics;
+
+class voidPComponent {
+	unsigned int vecCap;
+	void* tmpPtr;
+	
+public:
+	CompIdx idx;
+
+	template<typename T>
+	T* Get();
+	voidPComponent(const CompIdx& idx);
+	voidPComponent(unsigned int _vecCap, void* p, const CompIdx& _idx);
+	voidPComponent& operator=(const CompIdx& idx);
+};
+
+template<typename T, typename Enable = std::enable_if_t<std::is_pointer<T>::value>>
+class pComponent {
+	unsigned int vecCapacity;
+	CompIdx idx;
+public:
+
+	T tmpPtr;
+
+	T Get();
+	pComponent();
+	pComponent(unsigned int* i, unsigned int* j, unsigned int cap, T _ptr);
+	pComponent(const pComponent<T>& other);
+	pComponent(const CompIdx& idx);
+	pComponent& operator=(const pComponent& other);
+	pComponent& operator=(const CompIdx& idx);
+
+	operator voidPComponent();
+
+	const CompIdx& Idx();
+};
+
+enum ComponentsOrder {
+	collider = 2,
+	renderer = 3
+};
 
 class Components {
 	template<typename T>
@@ -33,63 +75,39 @@ class Base {
 protected:
 	unsigned int compsIdx;
 	unsigned int vecCap;
+	unsigned int sortOrder;
 public:
-	const unsigned int sortOrder;
+	
 	virtual void Update() = 0;
-	Base(unsigned int _sortOrder);
+	Base();
 	virtual ~Base() = default;
 	virtual void Erase(unsigned int j) = 0;
 	virtual void* get(unsigned int j) = 0;
 };
 
-template<typename T, typename Enable = std::enable_if_t<std::is_pointer<T>::value>>
-class pComponent {
-	unsigned int vecCapacity;
-	T tmpPtr;
-	CompIdx idx;
-public:
 
-	T Get();
-	pComponent();
-	pComponent(unsigned int* i, unsigned int j, unsigned int cap, T _ptr);
-	pComponent(const pComponent<T>& other);
-	pComponent(const CompIdx& idx);
-	pComponent& operator=(const pComponent& other);
-	pComponent& operator=(const CompIdx& idx);
 
-	const CompIdx& Idx();
-};
 
-class voidPComponent {
-	unsigned int vecCap;
-	void* tmpPtr;
-	CompIdx idx;
-public:
-	template<typename T>
-	T* Get();
-	voidPComponent(const CompIdx& idx);
-	voidPComponent& operator=(const CompIdx& idx);
-};
+
+class GameObject;
 
 template<typename T>
 class CreateComponent : public Base
 {
 	template<typename T, typename Enable>
 	friend class pComponent;
+
+	friend class GameObject;
 	
 private:
 	CreateComponent();
 	~CreateComponent();
 
 	std::vector<T> vector;
-
-	static CreateComponent* self;
-	
-	
 public:
 	
 	static CreateComponent& Get();
-	static void Destroy();
+	//static void Destroy();
 	std::vector<T>& Vector();
 	pComponent<T*> Create();
 	void Clear();
@@ -98,14 +116,20 @@ public:
 	void Update() override;
 };
 
+
+class RenderComponent;
+class Collider;
+
 template<typename T>
-CreateComponent<T>* CreateComponent<T>::self = nullptr;
-
-
-
-template<typename T>
-inline CreateComponent<T>::CreateComponent() : Base(0)
+inline CreateComponent<T>::CreateComponent()
 {
+	if (std::is_base_of<RenderComponent, T>::value) {
+		sortOrder = ComponentsOrder::renderer;
+	}
+	else if (std::is_base_of<Collider, T>::value) {
+		sortOrder = ComponentsOrder::collider;
+	}
+
 	compsIdx = Components::GetInstance().Bases.size();
 	Components::GetInstance().Bases.push_back(dynamic_cast<Base*>(this));
 	Components::GetInstance().Sort();
@@ -119,19 +143,15 @@ inline CreateComponent<T>::~CreateComponent()
 template<typename T>
 inline CreateComponent<T>& CreateComponent<T>::Get()
 {
-	if (self == nullptr) {
-		self = new CreateComponent<T>();
-
-	}
-	return *self;
+	static CreateComponent<T> instance;
+	return instance;
 }
 
-template<typename T>
-static void CreateComponent<T>::Destroy()
-{
-	delete self;
-	self = nullptr;
-}
+//template<typename T>
+//static void CreateComponent<T>::Destroy()
+//{
+//
+//}
 
 template<typename T>
 inline std::vector<T>& CreateComponent<T>::Vector()
@@ -140,10 +160,13 @@ inline std::vector<T>& CreateComponent<T>::Vector()
 }
 
 template<typename T>
-inline void CreateComponent<T>::Erase(unsigned int idx)
+inline void CreateComponent<T>::Erase(unsigned int _idx)
 {
-	vector[idx].Destructor();
-	vector.erase(vector.begin() + idx);
+	vector[_idx].dest();
+	vector.erase(vector.begin() + _idx);
+	for (unsigned int i = _idx; i < vector.size(); i++) {
+		vector[i].idx--;
+	}
 }
 
 template<typename T>
@@ -169,10 +192,11 @@ inline void CreateComponent<T>::Update()
 template<typename T>
 inline pComponent<T*> CreateComponent<T>::Create()
 {
-	
+	unsigned int* _idx = new unsigned int(vector.size());
 	vector.emplace_back();
 	vecCap = vector.capacity();
-	return pComponent<T*>(&compsIdx,vector.size()-1,vector.capacity(),&vector[vector.size()-1]);
+	vector.back().idx = _idx;
+	return pComponent<T*>(&compsIdx, vector.back().idx,vector.capacity(),&vector.back());
 }
 
 template<typename T, typename Enable>
@@ -196,7 +220,7 @@ pComponent<T, Enable>::pComponent()
 }
 
 template<typename T, typename Enable>
-inline pComponent<T, Enable>::pComponent(unsigned int* i, unsigned int j, unsigned int cap, T _ptr)
+inline pComponent<T, Enable>::pComponent(unsigned int* i, unsigned int* j, unsigned int cap, T _ptr)
 {
 	idx.first = i;
 	idx.second = j;
@@ -232,6 +256,12 @@ pComponent<T, Enable>& pComponent<T, Enable>::operator=(const CompIdx& _idx)
 {
 	idx = _idx;
 	return *this;
+}
+
+template<typename T, typename Enable>
+inline pComponent<T, Enable>::operator voidPComponent()
+{
+	return { vecCapacity,tmpPtr,idx };
 }
 
 template<typename T, typename Enable>

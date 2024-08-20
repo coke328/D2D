@@ -1,56 +1,10 @@
-﻿  Camera.cpp
-C:\d2dEngine\d2dWinApp\GameLib\Collider.h(37,49): warning C4267: '=': conversion from 'size_t' to 'unsigned int', possible loss of data
-  Collider.cpp
-C:\d2dEngine\d2dWinApp\GameLib\Collider.h(37,49): warning C4267: '=': conversion from 'size_t' to 'unsigned int', possible loss of data
-  Component.cpp
-C:\d2dEngine\d2dWinApp\GameLib\Collider.h(37,49): warning C4267: '=': conversion from 'size_t' to 'unsigned int', possible loss of data
-  GameLib.cpp
-C:\d2dEngine\d2dWinApp\GameLib\Collider.h(37,49): warning C4267: '=': conversion from 'size_t' to 'unsigned int', possible loss of data
+﻿  Physics.cpp
 C:\d2dEngine\d2dWinApp\GameLib\Mathf.h(9,19): warning C4305: 'initializing': truncation from 'double' to 'float'
-  GameObject.cpp
-C:\d2dEngine\d2dWinApp\GameLib\Collider.h(37,49): warning C4267: '=': conversion from 'size_t' to 'unsigned int', possible loss of data
-  RenderComponents.cpp
-C:\d2dEngine\d2dWinApp\GameLib\Collider.h(37,49): warning C4267: '=': conversion from 'size_t' to 'unsigned int', possible loss of data
-C:\d2dEngine\d2dWinApp\GameLib\RenderComponents.cpp(68,14): warning C4244: 'initializing': conversion from 'UINT32' to 'float', possible loss of data
-C:\d2dEngine\d2dWinApp\GameLib\RenderComponents.cpp(69,15): warning C4244: 'initializing': conversion from 'UINT32' to 'float', possible loss of data
-C:\d2dEngine\d2dWinApp\GameLib\RenderComponents.cpp(120,14): warning C4244: 'initializing': conversion from 'UINT32' to 'float', possible loss of data
-C:\d2dEngine\d2dWinApp\GameLib\RenderComponents.cpp(121,15): warning C4244: 'initializing': conversion from 'UINT32' to 'float', possible loss of data
-C:\d2dEngine\d2dWinApp\GameLib\RenderComponents.cpp(130,20): warning C4018: '<': signed/unsigned mismatch
-C:\d2dEngine\d2dWinApp\GameLib\RenderComponents.cpp(131,21): warning C4018: '<': signed/unsigned mismatch
-C:\d2dEngine\d2dWinApp\GameLib\RenderComponents.cpp(161,34): warning C4018: '>=': signed/unsigned mismatch
-  Renderer.cpp
-C:\d2dEngine\d2dWinApp\GameLib\Collider.h(37,49): warning C4267: '=': conversion from 'size_t' to 'unsigned int', possible loss of data
-C:\d2dEngine\d2dWinApp\GameLib\Renderer.cpp(239,54): warning C4267: 'argument': conversion from 'size_t' to 'UINT32', possible loss of data
-C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.40.33807\include\utility(247,54): warning C4267: 'initializing': conversion from 'size_t' to '_Ty2', possible loss of data
-C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.40.33807\include\utility(247,54): warning C4267:         with
-C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.40.33807\include\utility(247,54): warning C4267:         [
-C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.40.33807\include\utility(247,54): warning C4267:             _Ty2=unsigned int
-C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.40.33807\include\utility(247,54): warning C4267:         ]
-  Resources.cpp
-C:\d2dEngine\d2dWinApp\GameLib\Collider.h(37,49): warning C4267: '=': conversion from 'size_t' to 'unsigned int', possible loss of data
-C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.40.33807\include\utility(247,54): warning C4267: 'initializing': conversion from 'size_t' to '_Ty2', possible loss of data
-C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.40.33807\include\utility(247,54): warning C4267:         with
-C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.40.33807\include\utility(247,54): warning C4267:         [
-C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.40.33807\include\utility(247,54): warning C4267:             _Ty2=unsigned int
-C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.40.33807\include\utility(247,54): warning C4267:         ]
-  Scene.cpp
-C:\d2dEngine\d2dWinApp\GameLib\Collider.h(37,49): warning C4267: '=': conversion from 'size_t' to 'unsigned int', possible loss of data
-C:\d2dEngine\d2dWinApp\GameLib\Scene.h(56,36): warning C4311: 'type cast': pointer truncation from 'GameObject *' to 'int'
-C:\d2dEngine\d2dWinApp\GameLib\Scene.h(56,36): warning C4302: 'type cast': truncation from 'GameObject *' to 'int'
-C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.40.33807\include\utility(247,54): warning C4267: 'initializing': conversion from 'size_t' to '_Ty2', possible loss of data
-C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.40.33807\include\utility(247,54): warning C4267:         with
-C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.40.33807\include\utility(247,54): warning C4267:         [
-C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.40.33807\include\utility(247,54): warning C4267:             _Ty2=unsigned int
-C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.40.33807\include\utility(247,54): warning C4267:         ]
-  SceneManager.cpp
-C:\d2dEngine\d2dWinApp\GameLib\Collider.h(37,49): warning C4267: '=': conversion from 'size_t' to 'unsigned int', possible loss of data
-  Script.cpp
-C:\d2dEngine\d2dWinApp\GameLib\Collider.h(37,49): warning C4267: '=': conversion from 'size_t' to 'unsigned int', possible loss of data
-  Transform.cpp
-C:\d2dEngine\d2dWinApp\GameLib\Mathf.h(9,19): warning C4305: 'initializing': truncation from 'double' to 'float'
-C:\d2dEngine\d2dWinApp\GameLib\Collider.h(37,49): warning C4267: '=': conversion from 'size_t' to 'unsigned int', possible loss of data
-  d2dWinApp.cpp
-C:\d2dEngine\d2dWinApp\GameLib\Collider.h(37,49): warning C4267: '=': conversion from 'size_t' to 'unsigned int', possible loss of data
-  Generating Code...
-C:\d2dEngine\d2dWinApp\GameLib\GameLib.cpp(61,1): warning C4715: 'Game::Init': not all control paths return a value
+C:\d2dEngine\d2dWinApp\GameLib\Physics.cpp(16,25): warning C4267: 'initializing': conversion from 'size_t' to 'unsigned int', possible loss of data
+C:\d2dEngine\d2dWinApp\GameLib\Physics.cpp(96,67): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\d2dEngine\d2dWinApp\GameLib\Physics.cpp(100,68): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\d2dEngine\d2dWinApp\GameLib\Physics.cpp(141,67): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\d2dEngine\d2dWinApp\GameLib\Physics.cpp(187,21): warning C4267: 'initializing': conversion from 'size_t' to 'unsigned int', possible loss of data
+C:\d2dEngine\d2dWinApp\GameLib\Physics.cpp(198,27): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
+C:\d2dEngine\d2dWinApp\GameLib\Physics.cpp(199,27): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
   GameLib.vcxproj -> C:\d2dEngine\d2dWinApp\x64\Debug\GameLib.lib

@@ -85,7 +85,7 @@ void GameObject::Destroy()
 {
 
 	for (const auto& idx : *components) {
-		Components::GetInstance().EraseComponent(idx);
+		Components::GetInstance().EraseComponent(idx.idx);
 	}
 
 	scene->RemoveGameObject(name);

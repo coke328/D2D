@@ -60,7 +60,7 @@ public:
 	BitmapRender();
 	virtual ~BitmapRender();
 
-	virtual void Update() override;
+	void Update() override;
 
 	Vector2f center;
 	float alpha;

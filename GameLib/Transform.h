@@ -20,7 +20,7 @@ private:
 	
 protected:
 	Vector2f LPosition;
-	float LRotation;
+	float LRotation;//radian
 	Vector2f LScale;
 
 	Matrix LMatrix;
@@ -48,9 +48,9 @@ public:
 	void AddGlobalPosition(Vector2f deltaPos);
 	void SetGlobalPosition(Vector2f Pos);
 
-	void AddLocalRotation(float deltaR);
-	void SetLocalRotation(float R);
-	void SetGlobalRotation(float R);
+	void AddLocalRotation(float deltaR);//radian
+	void SetLocalRotation(float R);//radian
+	void SetGlobalRotation(float R);//radian
 
 	void AddLocalScale(Vector2f deltaScale);
 	void SetLocalScale(Vector2f Scale);

@@ -7,7 +7,7 @@
 
 transform::transform()
 {
-	LPosition = { 0,0 };
+	LPosition = { 0.000001,0.000001 };
 	LRotation = 0;
 	LScale = { 1,1 };
 
@@ -64,7 +64,7 @@ void transform::CalcLMatrix()
 {
 	if (Changed == false) return;
 	LMatrix = Matrix::Scale(LScale.x, LScale.y) *
-		Matrix::Rotation(LRotation) *
+		Matrix::Rotation(Mathf::RadToDeg(LRotation)) *
 		Matrix::Translation(LPosition.x, LPosition.y);
 	//PrintMatrix(LMatrix);
 	Changed = false;
@@ -115,6 +115,7 @@ void transform::AddGlobalPosition(Vector2f deltaPos)
 		LPosition += { result.dx, result.dy };
 	}
 	else {
+		//SetLocalMatrix(GetLocalMatrix() * Matrix::Translation(deltaPos.x, deltaPos.y));
 		LPosition += deltaPos;
 	}
 	Modified();
@@ -200,7 +201,7 @@ void transform::SetLocalMatrix(Matrix matrix)
 {
 	LMatrix = matrix;
 	LPosition = Mathf::PosFromMatrix(matrix);
-	LRotation = Mathf::RotFromMatrix(matrix);
+	LRotation = -Mathf::RotFromMatrix(matrix);
 	LScale = Mathf::ScaleFromMatrix(matrix);
 }
 

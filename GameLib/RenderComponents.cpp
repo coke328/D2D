@@ -186,13 +186,13 @@ void AnimationRender::DeleteFrames()
 void PolygonRender::Render()
 {
 	if (polygon.Size() == 0) return;
-
+	polygon.UpdateGlobalPoints();
 	Renderer::GetInstance().RenderPolygon(polygon,color,lineThickness);
 }
 
 void PolygonRender::Update()
 {
-	polygon.UpdateGlobalPoints();
+	
 }
 
 PolygonRender::PolygonRender() : color(0,0,0),lineColor(0,0,0)

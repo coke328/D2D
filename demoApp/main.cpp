@@ -6,13 +6,37 @@
 #include <stdlib.h>
 #include <time.h>
 
+class Wall : public GameObject {
+public:
+	pComponent<PolygonRender*> polyRender;
+	pComponent<PolygonCollider*> polyColl;
+	virtual ~Wall() {}
+
+	void Init() override {
+		std::array<Vector2f, 4> tmp;
+		tmp[0] = { 1200,-400 };
+		tmp[1] = { -1200,-450 };
+		tmp[2] = { -1200,-600 };
+		tmp[3] = { 1200,-600 };
+		polyRender = AddComponent<PolygonRender>();
+		polyColl = AddComponent<PolygonCollider>();
+
+		polyRender.Get()->Init(tmp);
+		polyColl.Get()->Init(tmp);
+
+		polyRender.Get()->color = D2D1::ColorF(255, 0, 0);
+		polyRender.Get()->lineThickness = 2;
+	}
+};
 
 class PolygonShape : public GameObject {
 public:
 	pComponent<PolygonRender*> polyRender;
 	pComponent<PolygonCollider*> polyColl;
+	pComponent<RigidBody*> rigidbody;
+	virtual ~PolygonShape() {
 
-	PolygonShape() = default;
+	}
 
 	void Init() override {
 		std::array<Vector2f, 4> tmp;
@@ -23,6 +47,7 @@ public:
 
 		polyRender = AddComponent<PolygonRender>();
 		polyColl = AddComponent<PolygonCollider>();
+		rigidbody = AddComponent<RigidBody>();
 
 		polyRender.Get()->Init(tmp);
 		polyColl.Get()->Init(tmp);
@@ -30,33 +55,112 @@ public:
 		polyRender.Get()->color = D2D1::ColorF(0, 0, 0);
 		polyRender.Get()->lineThickness = 2;
 
-		
-
-		
+		rigidbody.Get()->CalcMoment();
 	}
 
-	void FixedUpdate() override {
+	void PolyInit(float mass, float inertia, float bounce, float staticFriction, float kineticFriction) {
+		rigidbody.Get()->mass = mass;
+		rigidbody.Get()->angularInertia = inertia;
+		rigidbody.Get()->kineticFriction = kineticFriction;
+		rigidbody.Get()->staticFriction = staticFriction;
+
+		rigidbody.Get()->CalcMoment();
+	}
+	void ShapeChange(std::array<Vector2f, 4> points) {
+		polyRender.Get()->Init(points);
+		polyColl.Get()->Init(points);
+	}
+
+	void FixedUpdate() override {}
+};
+
+class MovePoly : public PolygonShape {
+	float speed;
+	float rotspeed;
+	Vector2f mouseStart;
+public:
+	MovePoly(){
+		speed = 50;
+		rotspeed = 300;
+	}
+
+	void Update() override {
+		//if (InputSystem::GetInstance().IsKeyDown(VK_LBUTTON)) {
+		//	mouseStart = InputSystem::GetInstance().GetGlobalMousePos();
+
+		//	
+		//}
+		//if (InputSystem::GetInstance().IsKeyUp(VK_LBUTTON)) {
+		//	Vector2f force = (InputSystem::GetInstance().GetGlobalMousePos() - mouseStart);
+		//	rigidbody.Get()->AddForceByPoint(mouseStart, force);
+		//	//std::cout << force.x << "," << force.y << std::endl;
+		//}
+
+		//std::cout << m_transform.GetGlobalPosition().x << std::endl;
+	}
+
+	void FixedUpdate() override{
+		//std::cout << rigidbody.Get()->velocity.x << std::endl;
+		//std::cout << m_transform.GetLocalPosition().x << std::endl;
+
+		if (InputSystem::GetInstance().IsKeyPress('W')) {
+			rigidbody.Get()->AddForce({ 0,speed });
+			//m_transform.AddGlobalPosition({ 0,speed });
+			//rigidbody.Get()->velocity = { 0,speed };
+		}
+		if (InputSystem::GetInstance().IsKeyPress('S')) {
+			rigidbody.Get()->AddForce({ 0,-speed });
+			//m_transform.AddGlobalPosition({ 0,-speed });
+			//rigidbody.Get()->velocity = { 0,-speed };
+		}
+		if (InputSystem::GetInstance().IsKeyPress('A')) {
+			rigidbody.Get()->AddForce({ -speed,0 });
+			//m_transform.AddGlobalPosition({ -speed,0 });
+			//rigidbody.Get()->velocity = { -speed,0 };
+		}
+		if (InputSystem::GetInstance().IsKeyPress('D')) {
+			rigidbody.Get()->AddForce({ speed,0 });
+			//m_transform.AddGlobalPosition({ speed,0 });
+			//rigidbody.Get()->velocity = { speed,0 };
+		}
+		if (InputSystem::GetInstance().IsKeyPress('Q')) {
+			rigidbody.Get()->AddRotForce(rotspeed);
+		}
+		if (InputSystem::GetInstance().IsKeyPress('E')) {
+			rigidbody.Get()->AddRotForce(-rotspeed);
+		}
 
 		
-
 	}
 };
 
 class Test : public Scene {
-	float speed;
 public:
-	PolygonShape* poly1;
-	PolygonShape* poly2;
+	MovePoly* player;
+	PolygonShape* poly;
+	Wall* wall;
 
 	void SceneLoad() override {
 		Renderer::GetInstance().SetBackgroundColor({ 255, 255, 255 });
 
-		poly1 = new PolygonShape;
-		AddGameObject(poly1);
-		poly2 = new PolygonShape;
-		AddGameObject(poly2);
-		poly1->m_transform.SetGlobalPosition({ 300, 0 });
-		speed = 3;
+		player = new MovePoly;
+		AddGameObject(player);
+		poly = new PolygonShape;
+		AddGameObject(poly);
+		wall = new Wall;
+		AddGameObject(wall);
+
+		poly->PolyInit(1000, 100, 0.1, 0.9, 0.8);
+		std::array<Vector2f, 4> tmp;
+		tmp[0] = { 200, 200 };
+		tmp[1] = { -200, 200 };
+		tmp[2] = { -200, -200 };
+		tmp[3] = { 200, -200 };
+		poly->ShapeChange(tmp);
+
+		player->m_transform.SetLocalPosition({ 300, 0 });
+
+		player->PolyInit(10, 1, 0.5, 0.8, 0.8);
 	}
 	void SceneEnd() override {
 
@@ -66,18 +170,7 @@ public:
 		
 	}
 	void SceneFixedUpdate() override {
-		if (InputSystem::GetInstance().IsKeyPress('W')) {
-			poly1->m_transform.AddLocalPosition({ 0, speed });
-		}
-		if (InputSystem::GetInstance().IsKeyPress('S')) {
-			poly1->m_transform.AddLocalPosition({ 0, -speed });
-		}
-		if (InputSystem::GetInstance().IsKeyPress('A')) {
-			poly1->m_transform.AddLocalPosition({ -speed, 0 });
-		}
-		if (InputSystem::GetInstance().IsKeyPress('D')) {
-			poly1->m_transform.AddLocalPosition({ speed, 0 });
-		}
+		
 	}
 
 	void Render() override {

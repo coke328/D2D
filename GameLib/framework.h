@@ -17,9 +17,12 @@
 #include <memory>
 #include <algorithm>
 #include <map>
-#include <deque>
+#include <queue>
 #include <typeinfo>
 #include <array>
+#include <mutex>
+#include <unordered_map>
+
 
 #pragma comment(lib, "d2d1.lib")
 #pragma	comment(lib, "dwrite.lib")

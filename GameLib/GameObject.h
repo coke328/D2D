@@ -1,6 +1,7 @@
 #pragma once
 #include "RenderComponents.h"
 #include "Collider.h"
+#include "RigidBody.h"
 #include "Transform.h"
 #include "vectorMap.h"
 
@@ -17,7 +18,7 @@ class GameObject
 	void LoopEnd();
 	void Initialize(Scene* _scene);
 
-	vectorMap<std::string, CompIdx> components;
+	vectorMap<std::string, voidPComponent> components;
 	std::vector<unsigned int> renderCompIdx;
 
 	std::string name;
@@ -29,8 +30,9 @@ protected:
 
 	template<class C>
 	pComponent<C*> AddComponent();
+
 	template<class C>
-	pComponent<C*> FindComponent();
+	voidPComponent FindComponent();
 	template<class C>
 	void DestroyComponent();
 
@@ -47,6 +49,10 @@ public:
 	GameObject();
 	
 	virtual ~GameObject();
+
+
+	template<class C>
+	C* GetComponent();
 
 	transform m_transform;
 
@@ -80,8 +86,8 @@ template<class C>
 inline pComponent<C*> GameObject::AddComponent()
 {
 	pComponent<C*> pCom = CreateComponent<C>::Get().Create();
-	pCom.Get()->compInit(this, pCom.Idx());
-	components.Push(typeid(C).raw_name(), pCom.Idx());
+	pCom.tmpPtr->compInit(this, pCom.Idx());
+	components.Push((std::string)typeid(C).name(), pCom);
 	if (std::is_base_of<RenderComponent, C>::value) {
 		renderCompIdx.push_back(components.Size()-1);
 		//std::cout << typeid(C).name() << components.Size() - 1 << std::endl;
@@ -91,14 +97,21 @@ inline pComponent<C*> GameObject::AddComponent()
 }
 
 template<class C>
-inline pComponent<C*> GameObject::FindComponent()
+inline voidPComponent GameObject::FindComponent()
 {
-	return components.FindObject(typeid(C).raw_name());
-	
+	return components.FindObject((std::string)typeid(C).name());
 }
 
 template<class C>
 inline void GameObject::DestroyComponent()
 {
-	Components::GetInstance().EraseComponent(FindComponent<C>());
+	Components::GetInstance().EraseComponent(FindComponent<C>().idx);
+}
+
+template<class C>
+inline C* GameObject::GetComponent()
+{
+	voidPComponent* comp = components.FindObject((std::string)typeid(C).name());
+	if (comp == nullptr) return nullptr;
+	return comp->Get<C>();
 }

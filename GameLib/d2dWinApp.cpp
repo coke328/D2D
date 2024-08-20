@@ -3,7 +3,6 @@
 #include "TimeSystem.h"
 #include "InputSystem.h"
 
-
 d2dWinApp::d2dWinApp() :
 	m_hwnd(nullptr)
 {
@@ -101,6 +100,13 @@ void d2dWinApp::Run()
 			}
 			//InputUpdate
 			Update(deltaTime);
+
+			Components::GetInstance().ComponentsUpdate();
+
+			CollideManager::GetInstance().Update();
+
+			Physics::GetInstance().ProcessCollision();
+
 			OnRender();
 
 			EndLoop();

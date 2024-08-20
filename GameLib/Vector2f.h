@@ -26,5 +26,4 @@ public:
 	float sqrLength();
 	Vector2f Normalize();
 	float Direction();
-
 };

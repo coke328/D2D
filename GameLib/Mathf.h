@@ -14,7 +14,21 @@ namespace Mathf
 
 	Vector2f DirToVec(float R);
 
-	float RadToDeg(float R);
-	float DegToRad(float D);
+
+	inline float RadToDeg(float R) {
+		return R * 180 / PI;
+	}
+	inline float DegToRad(float D) {
+		return D / 180 * PI;
+	}
+	inline float Dot(const Vector2f& v1, const Vector2f& v2) {
+		return v1.x * v2.x + v1.y * v2.y;
+	}
+	inline float Cross(const Vector2f& v1, const Vector2f& v2) {
+		return v1.x * v2.y - v1.y * v2.x;
+	}
+	inline float Square(float a) {
+		return a * a;
+	}
 }
 

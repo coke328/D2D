@@ -1,8 +1,5 @@
 #pragma once
-#include <vector>
-#include <unordered_map>
-#include <utility>
-#include <type_traits>
+
 
 
 
@@ -17,7 +14,7 @@ public:
 	~vectorMap();
 
 	unsigned int Size();
-	T2 FindObject(const T1& key);
+	T2* FindObject(const T1& key);
 	unsigned int FindIdx(const T1& key);
 	bool isIn(const T1& key);
 	bool Push(const T1& key, const T2& object);
@@ -49,14 +46,14 @@ inline unsigned int vectorMap<T1, T2>::Size()
 }
 
 template<typename T1, typename T2>
-inline T2 vectorMap<T1, T2>::FindObject(const T1& key)
+inline T2* vectorMap<T1, T2>::FindObject(const T1& key)
 {
 	auto it = Map.find(key);
 	if (it == Map.end()) {
 		//std::cout << "not found" << std::endl;
-		return NULL;
+		return nullptr;
 	}
-	else return Vector[it->second];
+	else return &Vector[it->second];
 }
 
 template<typename T1, typename T2>

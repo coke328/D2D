@@ -8,7 +8,7 @@ Components::Components()
 void Components::Sort()
 {
 	std::sort(Bases.begin(), Bases.end(), [](Base* b1,Base* b2) {
-		return b1->sortOrder > b2->sortOrder;
+		return b1->sortOrder < b2->sortOrder;
 		});
 
 	for (unsigned int i = 0; i < Bases.size(); i++) {
@@ -18,12 +18,12 @@ void Components::Sort()
 
 void* Components::GetComponent(const CompIdx& idx)
 {
-	return Bases[*idx.first]->get(idx.second);
+	return Bases[*idx.first]->get(*idx.second);
 }
 
 void Components::EraseComponent(const CompIdx& idx)
 {
-	Bases[*idx.first]->Erase(idx.second);
+	Bases[*idx.first]->Erase(*idx.second);
 }
 
 unsigned int Components::GetCapacity(unsigned int i)
@@ -50,8 +50,10 @@ void Components::ComponentsUpdate()
 	}
 }
 
-Base::Base(unsigned int _sortOrder) : sortOrder(_sortOrder)
-{
+
+Base::Base() {
+	sortOrder = 0;
+
 }
 
 voidPComponent::voidPComponent(const CompIdx& _idx)
@@ -59,6 +61,13 @@ voidPComponent::voidPComponent(const CompIdx& _idx)
 	idx = _idx;
 	tmpPtr = Components::GetInstance().GetComponent(idx);
 	vecCap = Components::GetInstance().GetCapacity(*idx.first);
+}
+
+voidPComponent::voidPComponent(unsigned int _vecCap, void* p, const CompIdx& _idx)
+{
+	vecCap = _vecCap;
+	tmpPtr = p;
+	idx = _idx;
 }
 
 voidPComponent& voidPComponent::operator=(const CompIdx& _idx)

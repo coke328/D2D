@@ -7,14 +7,14 @@
 
 #undef min
 
-void Renderer::AddRenderComponent(const CompIdx& idx)
+void Renderer::AddRenderComponent(const voidPComponent& idx)
 {
-	renderComps.Push(CompIdxToInt(idx), idx);
+	renderComps.Push(CompIdxToInt(idx.idx), idx);
 }
 
-void Renderer::deleteRenderComponent(const CompIdx& idx)
+void Renderer::deleteRenderComponent(const voidPComponent& idx)
 {
-	renderComps.Erase(CompIdxToInt(idx));
+	renderComps.Erase(CompIdxToInt(idx.idx));
 }
 
 Renderer::Renderer() :
@@ -32,7 +32,8 @@ Renderer::Renderer() :
 
 	m_ClientSize = { 0,0 };
 	
-	tmpCamMatrix = Matrix::Identity();
+	CamMatrix = Matrix::Identity();
+	CamMatrixInvert = Matrix::Identity();
 }
 
 void Renderer::CompsClear()
@@ -175,6 +176,7 @@ void Renderer::SortRenderComponents()
 
 void Renderer::Render()
 {
+	CalcScreenMatrix();
 	SortRenderComponents();
 
 	for (auto& i : *renderComps) {
@@ -211,13 +213,10 @@ void Renderer::RenderBitmap(pBitmap bitmap, Matrix matrix, D2D1_RECT_F destRect,
 
 void Renderer::RenderPolygon(Shape::Polygon& poly, D2D1::ColorF color, float thickness)
 {
-	//PrintMatrix(ScreenMatrix());
 
-	Matrix matrix = ScreenMatrix();
+	if (!IsVisible(ScreenMatrix(), poly.GetAABB())) return;
 
-	if (!IsVisible(matrix, poly.GetAABB())) return;
-
-	m_pRenderTarget->SetTransform(matrix);
+	m_pRenderTarget->SetTransform(ScreenMatrix());
 	m_pBrush->SetColor(color);
 
 	Vector2f* vec = poly.GetGlobalPoints();
@@ -280,17 +279,27 @@ D2D1_WINDOW_STATE Renderer::CheckWindowState()
 	return m_pRenderTarget->CheckWindowState();
 }
 
-const Matrix& Renderer::ScreenMatrix()
+void Renderer::CalcScreenMatrix()
 {
 	if (pCamera->m_transform.IsModified()) {
-		tmpCamMatrix = pCamera->m_transform.GetGlobalMatrix()
+		CamMatrix = pCamera->m_transform.GetGlobalMatrix()
 			* Matrix::Scale(1, -1)
 			* Matrix::Translation(-float(m_ClientSize.width) / 2, float(m_ClientSize.height) / 2);
-		tmpCamMatrix.Invert();
-		//tmpCamMatrix = tmpCamMatrix * Matrix::Scale(1, -1);
+		CamMatrixInvert = CamMatrix;
+		CamMatrixInvert.Invert();
 	}
-	return tmpCamMatrix;
 }
+
+const Matrix& Renderer::ScreenMatrix()
+{
+	return CamMatrixInvert;
+}
+
+const Matrix& Renderer::GlabalMatrix()
+{
+	return CamMatrix;
+}
+
 
 bool Renderer::IsVisible(const Matrix& matrix, Shape::AABB a)
 {
@@ -308,4 +317,9 @@ bool Renderer::IsVisible(const Matrix& matrix, Shape::AABB a)
 
 	Shape::AABB B = { {0,0}, {(float)m_ClientSize.width,(float)m_ClientSize.height} };
 	return CollisionCheck::AA_BB(a,B);
+}
+
+Vector2f Renderer::ScreenToGlobal(Vector2f screenPos)
+{
+	return Vector2f();
 }

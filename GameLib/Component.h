@@ -17,6 +17,11 @@ private:
 	template<typename T>
 	friend class CreateComponent;
 
+
+	unsigned int* idx;
+
+	void dest();
+	void compInit(GameObject* _gameObject, const CompIdx& idx);
 protected:
 	
 	CompIdx compidx;
@@ -24,14 +29,13 @@ protected:
 
 	
 	Component();
+	
 	virtual void Destructor() = 0;
 	virtual void Update() = 0;
 	virtual void FixedUpdate();
-public:
-	void compInit(GameObject* _gameObject, const CompIdx& idx);
+
 	virtual void Init();
+public:
 	virtual ~Component();
-	
-	
 };
 

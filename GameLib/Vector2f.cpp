@@ -78,7 +78,7 @@ Vector2f::operator D2D1_POINT_2F()
 
 float Vector2f::Length()
 {
-    return sqrtf(sqrLength());
+    return sqrtf(x * x + y * y);
 }
 
 float Vector2f::sqrLength()
@@ -92,7 +92,7 @@ Vector2f Vector2f::Normalize()
     return { x / l,y / l };
 }
 
-float Vector2f::Direction()
+float Vector2f::Direction()//radian
 {
     return atan2f(y,x);
 }

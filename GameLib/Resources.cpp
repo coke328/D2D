@@ -25,13 +25,13 @@ pBitmap Resources::LoadBitmapFromFile(const WCHAR* filePath)
 	pBitmap bitmap = nullptr;
 
 	if (upperResource != nullptr) {
-		bitmap = upperResource->bitmapMap.FindObject(std::wstring(filePath));
+		bitmap = *upperResource->bitmapMap.FindObject(std::wstring(filePath));
 		if (bitmap != nullptr) {
 			return bitmap;
 		}
 	}
 
-	bitmap = bitmapMap.FindObject(std::wstring(filePath));
+	bitmap = *bitmapMap.FindObject(std::wstring(filePath));
 
 	if (bitmap != nullptr) {
 		return bitmap;
