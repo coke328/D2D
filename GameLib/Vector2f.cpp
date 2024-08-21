@@ -1,6 +1,4 @@
 #include "pch.h"
-#include "Vector2f.h"
-#include <cmath>
 
 Vector2f::Vector2f()
 {

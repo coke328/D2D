@@ -2,7 +2,6 @@
 #include "Component.h"
 #include "Shape.h"
 
-
 class Renderer;
 
 class RenderComponent : public Component
@@ -37,8 +36,7 @@ protected:
 
 	
 public:
-	template<size_t n>
-	void Init(const std::array<Vector2f, n>& arr);
+	void Init(Vector2f* arr, size_t size);
 	void Render() override;
 	void Update() override;
 	PolygonRender();

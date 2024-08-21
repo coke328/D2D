@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "InputSystem.h"
-#include "Vector2f.h"
 #include "Renderer.h"
 
 void InputSystem::Initialize(HWND hWindow)

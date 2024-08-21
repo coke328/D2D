@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Shape.h"
+#include "Transform.h"
 
 Shape::Polygon::Polygon()
 {
@@ -67,13 +68,37 @@ void Shape::Polygon::UpdateGlobalPoints()
 
 void Shape::Polygon::Destructor()
 {
-	if (localPoints) { 
+	if (localPoints != nullptr) { 
 		delete[] localPoints; 
 		localPoints = nullptr;
 	}
 
-	if (globalPoints) { 
+	if (globalPoints != nullptr) { 
 		delete[] globalPoints;
 		globalPoints = nullptr;
+	}
+}
+
+void Shape::Polygon::SetPoints(Vector2f* arr, size_t _size)
+{
+	if (localPoints != nullptr)
+		delete[] localPoints;
+
+	size = _size;
+	localPoints = new Vector2f[size];
+
+	aabb.Min.x = localPoints[0].x;
+	aabb.Max.x = localPoints[0].x;
+	aabb.Min.y = localPoints[0].y;
+	aabb.Max.y = localPoints[0].y;
+
+	for (size_t i = 0; i < size; i++) {
+		localPoints[i] = arr[i];
+
+		aabb.Min.x = min(aabb.Min.x, localPoints[i].x);
+		aabb.Max.x = max(aabb.Max.x, localPoints[i].x);
+		aabb.Min.y = min(aabb.Min.y, localPoints[i].y);
+		aabb.Max.y = max(aabb.Max.y, localPoints[i].y);
+
 	}
 }

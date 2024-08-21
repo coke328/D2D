@@ -22,6 +22,10 @@
 #include <array>
 #include <mutex>
 #include <unordered_map>
+#include "Vector2f.h"
+#include "vectorMap.h"
+#include "Typedef.h"
+#include "Helper.h"
 
 
 #pragma comment(lib, "d2d1.lib")

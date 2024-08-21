@@ -1,9 +1,9 @@
 #pragma once
 #include "GameObject.h"
 #include "Resources.h"
-#include "Camera.h"
 
 class SceneManager;
+class Camera;
 
 class Scene
 {

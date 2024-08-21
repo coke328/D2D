@@ -1,6 +1,6 @@
 #pragma once
 #include "Component.h"
-#include "Physics.h"
+
 
 class RigidBody : public Component
 {
@@ -19,7 +19,8 @@ public:
 	float staticFriction;// 정지마찰
 	float kineticFriction;// 운동마찰 정지마찰력보다 작아야함
 	float bounce;//탄성
-	float gravity;
+	static float gravity;
+	static Vector2f gravityDiraction;
 
 	void CalcMoment();//polygonCollider 추가하고나서 호출
 	void AddForce(Vector2f force);

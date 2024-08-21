@@ -1,9 +1,8 @@
 #pragma once
-#include "Camera.h"
-#include "vectorMap.h"
-#include "Helper.h"
-#include "RenderComponents.h"
 #include "Shape.h"
+
+class Camera;
+class voidPComponent;
 
 class Renderer
 {

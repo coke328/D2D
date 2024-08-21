@@ -156,7 +156,6 @@
     <ClInclude Include="Mathf.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Physics.h" />
-    <ClInclude Include="RawInput.h" />
     <ClInclude Include="RenderComponents.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="Resources.h" />
@@ -191,7 +190,6 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Physics.cpp" />
-    <ClCompile Include="RawInput.cpp" />
     <ClCompile Include="RenderComponents.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Resources.cpp" />

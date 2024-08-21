@@ -1,6 +1,4 @@
 #pragma once
-#include "Vector2f.h"
-#include "Typedef.h"
 
 void PrintMatrix(const Matrix& m);
 

@@ -76,13 +76,13 @@ void CollideManager::CheckCollide(unsigned int i, unsigned int j)
 	if (size > 0) {
 		Collision::CreateCollision(&polyColls[i], &polyColls[j], contacts, size);
 	}
+	else {
+		delete[] contacts;
+	}
 }
 
 int CollideManager::GetCross(const Vector2f& P1, const Vector2f& P2, Vector2f* points, unsigned int size, Vector2f* crossPoint)
 {
-	std::vector<std::pair<int,float>> idx;
-	std::vector<Vector2f> crossPoints;
-
 	for (unsigned int i = 0; i < size; i++) {
 
 		float t = GetCrossMag(P1, P2, points[i], points[(i + 1) % size]);
@@ -94,10 +94,17 @@ int CollideManager::GetCross(const Vector2f& P1, const Vector2f& P2, Vector2f* p
 		idx.push_back({ i,t });
 		crossPoints.push_back(*crossPoint);
 	}
-	if (idx.size() == 0) return -1;
+	if (idx.size() == 0) { 
+		idx.clear();
+		crossPoints.clear();
+		return -1;
+	}
 
 	if (idx.size() == 1) {
-		return idx.front().first;
+		int tmp = idx.front().first;
+		idx.clear();
+		crossPoints.clear();
+		return tmp;
 	}
 	else {
 		float min = (crossPoints[0] - P2).Length();
@@ -112,6 +119,8 @@ int CollideManager::GetCross(const Vector2f& P1, const Vector2f& P2, Vector2f* p
 		}
 
 		*crossPoint = crossPoints[minIdx];
+		idx.clear();
+		crossPoints.clear();
 		return minIdx;
 	}
 }
@@ -163,6 +172,10 @@ Collision::Collision(PolygonCollider* poly1, PolygonCollider* poly2, Contact* _c
 	polys[1] = poly2;
 	contacts = _contacts;
 	size = _size;
+}
+
+Collision::~Collision()
+{
 }
 
 void Collision::CreateCollision(PolygonCollider* poly1, PolygonCollider* poly2, Contact* _contacts, size_t _size)

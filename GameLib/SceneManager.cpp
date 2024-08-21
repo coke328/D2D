@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "SceneManager.h"
 
-
 SceneManager::SceneManager(Resources* res) :
 	pResources(res),
 	currentScene(nullptr)

@@ -2,6 +2,7 @@
 #include "d2dWinApp.h"
 #include "TimeSystem.h"
 #include "InputSystem.h"
+#include "Physics.h"
 
 d2dWinApp::d2dWinApp() :
 	m_hwnd(nullptr)

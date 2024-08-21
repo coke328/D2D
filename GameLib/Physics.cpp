@@ -82,24 +82,24 @@ void Physics::CalcForce(GameObject* objects[2], RigidBody* rb[2], Contact& conta
 
 	std::pair<Vector2f, float> force;
 	if (tangentForce * sign <= staticFriction * abs(normalForce)) {
-		force = rb[0]->pointForce(contact.CollisionPoint, -tangent * tangentForce);
-		forces[0] += force.first;
-		rotForces[0] += force.second;
+		force = rb[0]->pointForce(contact.CollisionPoint, tangent * tangentForce);
+		frictionForces[0] += force.first;
+		frictionRotForces[0] += force.second;
 
-		force = rb[1]->pointForce(contact.CollisionPoint, tangent * tangentForce);
-		forces[1] += force.first;
-		rotForces[1] += force.second;
+		force = rb[1]->pointForce(contact.CollisionPoint, -tangent * tangentForce);
+		frictionForces[1] += force.first;
+		frictionRotForces[1] += force.second;
 	}
 	else {
 		float f = kineticFriction * normalForce;
 
 		force = rb[0]->pointForce(contact.CollisionPoint, tangent * f * sign);
-		forces[0] += force.first;
-		rotForces[0] += force.second;
+		frictionForces[0] += force.first;
+		frictionRotForces[0] += force.second;
 
 		force = rb[1]->pointForce(contact.CollisionPoint, -tangent * f * sign);
-		forces[1] += force.first;
-		rotForces[1] += force.second;
+		frictionForces[1] += force.first;
+		frictionRotForces[1] += force.second;
 	}
 }
 
@@ -116,7 +116,7 @@ void Physics::CalcHalfForce(bool gotrb, GameObject* objects[2], RigidBody* rb[2]
 
 	float IA = rb[A]->moment * rb[A]->angularInertia;
 
-	Vector2f tangent = { n.y,-n.x };
+	Vector2f tangent = { -n.y,n.x };
 	Vector2f relativeVel = (rb[A]->velocity + Vector2f(rb[A]->rotVelocity * rA.y, -rb[A]->rotVelocity * rA.x));
 	float mag = (1 / rb[A]->mass + Mathf::Square(Mathf::Cross(rA, n)) / IA);
 	float normalForce = Mathf::Dot(n, relativeVel) / mag;
@@ -129,18 +129,26 @@ void Physics::CalcHalfForce(bool gotrb, GameObject* objects[2], RigidBody* rb[2]
 	std::pair<Vector2f, float> force;
 
 	int sign = (tangentForce >= 0) ? 1 : -1;
-	
+
 	if (tangentForce * sign <= staticFriction * abs(normalForce)) {
 		force = rb[A]->pointForce(contact.CollisionPoint, -tangent * tangentForce);
-		forces[A] += force.first;
-		rotForces[A] += force.second;
+		frictionForces[A] += force.first;
+		frictionRotForces[A] += force.second;
+
+		/*Vector2f tmp = -tangent * tangentForce;
+		forces[A] += tmp;
+		rotForces[A] -= Mathf::Cross(rA, tmp);*/
 	}
 	else {
 		float f = kineticFriction * normalForce;
-
+		
 		force = rb[A]->pointForce(contact.CollisionPoint, tangent * f * sign);
-		forces[A] += force.first;
-		rotForces[A] += force.second;
+		frictionForces[A] += force.first;
+		frictionRotForces[A] += force.second;
+
+		//Vector2f tmp = tangent * f * sign;
+		//forces[A] += tmp;
+		//rotForces[A] -= Mathf::Cross(rA, tmp);
 	}
 }
 
@@ -156,7 +164,19 @@ float Physics::CalcFriction(float f1, float f2)
 
 float Physics::CalcBounce(float b1, float b2)
 {
-	return (b1 + b2) / 2;
+	return (b1 * b2) / (b1 + b2);
+}
+
+void Physics::ResetForces()
+{
+	forces[0] = { 0,0 };
+	forces[1] = { 0,0 };
+	rotForces[0] = 0;
+	rotForces[1] = 0;
+	frictionForces[0] = { 0,0 };
+	frictionForces[1] = { 0,0 };
+	frictionRotForces[0] = 0;
+	frictionRotForces[1] = 0;
 }
 
 Vector2f Physics::Force(Vector2f force, float mass)
@@ -186,10 +206,7 @@ void Physics::ProcessCollision()
 
 		unsigned int size = col->size;
 
-		forces[0] = { 0,0 };
-		forces[1] = { 0,0 };
-		rotForces[0] = 0;
-		rotForces[1] = 0;
+		ResetForces();
 
 		for (unsigned int i = 0; i < size; i++) {
 			SolveContact(objects, col->contacts[i], rb, col->polys);
@@ -203,10 +220,14 @@ void Physics::ProcessCollision()
 		if (rb[0] != nullptr) {
 			rb[0]->AddForce(forces[0]);
 			rb[0]->AddRotForce(rotForces[0]);
+			rb[0]->AddForce(frictionForces[0]);
+			rb[0]->AddRotForce(frictionRotForces[0]);
 		}
 		if (rb[1] != nullptr) {
 			rb[1]->AddForce(forces[1]);
 			rb[1]->AddRotForce(rotForces[0]);
+			rb[1]->AddForce(frictionForces[1]);
+			rb[1]->AddRotForce(frictionRotForces[1]);
 		}
 
 		Collision::Pop();

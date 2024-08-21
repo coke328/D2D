@@ -12,7 +12,6 @@ C:\d2dEngine\d2dWinApp\GameLib\InputSystem.cpp;C:\d2dEngine\d2dWinApp\GameLib\x6
 C:\d2dEngine\d2dWinApp\GameLib\Mathf.cpp;C:\d2dEngine\d2dWinApp\GameLib\x64\Debug\Mathf.obj
 C:\d2dEngine\d2dWinApp\GameLib\pch.cpp;C:\d2dEngine\d2dWinApp\GameLib\x64\Debug\pch.obj
 C:\d2dEngine\d2dWinApp\GameLib\Physics.cpp;C:\d2dEngine\d2dWinApp\GameLib\x64\Debug\Physics.obj
-C:\d2dEngine\d2dWinApp\GameLib\RawInput.cpp;C:\d2dEngine\d2dWinApp\GameLib\x64\Debug\RawInput.obj
 C:\d2dEngine\d2dWinApp\GameLib\RenderComponents.cpp;C:\d2dEngine\d2dWinApp\GameLib\x64\Debug\RenderComponents.obj
 C:\d2dEngine\d2dWinApp\GameLib\Renderer.cpp;C:\d2dEngine\d2dWinApp\GameLib\x64\Debug\Renderer.obj
 C:\d2dEngine\d2dWinApp\GameLib\Resources.cpp;C:\d2dEngine\d2dWinApp\GameLib\x64\Debug\Resources.obj

@@ -28,8 +28,7 @@ public:
 	Shape::Polygon polygon;
 	PolygonCollider();
 	~PolygonCollider() = default;
-	template<size_t n>
-	void Init(const std::array<Vector2f, n>& arr);
+	void Init(Vector2f* arr, size_t size);
 	void Update() override;
 	void Destructor() override;
 };

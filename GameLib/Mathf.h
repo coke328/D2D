@@ -1,5 +1,4 @@
 #pragma once
-#include "Vector2f.h"
 #include <math.h>
 
 using namespace D2D1;

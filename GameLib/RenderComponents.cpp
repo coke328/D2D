@@ -183,6 +183,17 @@ void AnimationRender::DeleteFrames()
 	}
 }
 
+void PolygonRender::Init(Vector2f* arr, size_t size)
+{
+	if (size < 3) {
+		std::cout << "polygonCollider init fail" << std::endl;
+		return;
+	}
+
+	polygon.SetPoints(arr, size);
+	polygon.SetTransform(&gameObject->m_transform);
+}
+
 void PolygonRender::Render()
 {
 	if (polygon.Size() == 0) return;

@@ -1,10 +1,4 @@
-﻿  Physics.cpp
-C:\d2dEngine\d2dWinApp\GameLib\Mathf.h(9,19): warning C4305: 'initializing': truncation from 'double' to 'float'
-C:\d2dEngine\d2dWinApp\GameLib\Physics.cpp(16,25): warning C4267: 'initializing': conversion from 'size_t' to 'unsigned int', possible loss of data
-C:\d2dEngine\d2dWinApp\GameLib\Physics.cpp(96,67): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\d2dEngine\d2dWinApp\GameLib\Physics.cpp(100,68): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\d2dEngine\d2dWinApp\GameLib\Physics.cpp(141,67): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\d2dEngine\d2dWinApp\GameLib\Physics.cpp(187,21): warning C4267: 'initializing': conversion from 'size_t' to 'unsigned int', possible loss of data
-C:\d2dEngine\d2dWinApp\GameLib\Physics.cpp(198,27): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
-C:\d2dEngine\d2dWinApp\GameLib\Physics.cpp(199,27): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
+﻿  RigidBody.cpp
+C:\d2dEngine\d2dWinApp\GameLib\RigidBody.cpp(37,22): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\d2dEngine\d2dWinApp\GameLib\RigidBody.cpp(47,20): warning C4267: 'initializing': conversion from 'size_t' to 'unsigned int', possible loss of data
   GameLib.vcxproj -> C:\d2dEngine\d2dWinApp\x64\Debug\GameLib.lib

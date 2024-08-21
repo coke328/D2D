@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "Scene.h"
-
+#include "Camera.h"
 
 void Scene::RemoveGameObject(std::string _objectName)
 {

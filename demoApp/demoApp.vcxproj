@@ -136,6 +136,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MainScene.cpp" />
+    <ClCompile Include="Object.cpp" />
+    <ClCompile Include="Shapes.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="resources\earth.png" />
@@ -146,6 +149,11 @@
     <ProjectReference Include="..\GameLib\GameLib.vcxproj">
       <Project>{c912528e-9c96-4778-9546-15527a6aed6b}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="MainScene.h" />
+    <ClInclude Include="Object.h" />
+    <ClInclude Include="Shapes.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

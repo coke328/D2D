@@ -2,18 +2,30 @@
 #include "RigidBody.h"
 #include "GameObject.h"
 #include "TimeSystem.h"
+#include "Physics.h"
+
+float RigidBody::gravity = 5.f;
+Vector2f RigidBody::gravityDiraction = { 0,-1 };
 
 void RigidBody::Update()
 {
+
 	float delT = TimeSystem::GetInstance().GetDeltaTime();
 	gameObject->m_transform.AddGlobalPosition(velocity * delT);
 	gameObject->m_transform.AddLocalRotation(rotVelocity * delT);
 
+
+	AddForce(gravityDiraction * gravity * mass);
 	//std::cout << (velocity).x << std::endl;
 }
 
 void RigidBody::Destructor()
 {
+}
+
+void RigidBody::Gravity()
+{
+	
 }
 
 RigidBody::RigidBody() : velocity(0,0),
@@ -23,8 +35,7 @@ RigidBody::RigidBody() : velocity(0,0),
 						moment(5000),
 						staticFriction(0.5),
 						kineticFriction(0.3),
-						bounce(0.5),
-						gravity(98)
+						bounce(0.5)
 {
 }
 

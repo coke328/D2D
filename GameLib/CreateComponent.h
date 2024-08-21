@@ -196,7 +196,7 @@ inline pComponent<T*> CreateComponent<T>::Create()
 	vector.emplace_back();
 	vecCap = vector.capacity();
 	vector.back().idx = _idx;
-	return pComponent<T*>(&compsIdx, vector.back().idx,vector.capacity(),&vector.back());
+	return pComponent<T*>(&compsIdx, _idx, vector.capacity(), &vector.back());
 }
 
 template<typename T, typename Enable>

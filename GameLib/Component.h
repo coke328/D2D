@@ -1,6 +1,5 @@
 #pragma once
 #include "Typedef.h"
-#include "Vector2f.h"
 #include "TimeSystem.h"
 #include "CreateComponent.h"
 

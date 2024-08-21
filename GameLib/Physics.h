@@ -1,5 +1,4 @@
 #pragma once
-#include "Vector2f.h"
 #include "CollideManager.h"
 
 class RigidBody;
@@ -23,8 +22,11 @@ class Physics
 	float CalcFriction(float f1, float f2);
 	float CalcBounce(float b1, float b2);
 
+	void ResetForces();
 	Vector2f forces[2];
 	float rotForces[2];
+	Vector2f frictionForces[2];
+	float frictionRotForces[2];
 
 public:
 	void ProcessCollision();

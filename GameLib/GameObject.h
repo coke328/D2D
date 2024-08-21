@@ -58,29 +58,9 @@ public:
 
 };
 
-template<size_t n>
-void PolygonCollider::Init(const std::array<Vector2f, n>& arr)
-{
-	if (n < 3) {
-		std::cout << "polygonCollider init fail" << std::endl;
-		return;
-	}
 
-	polygon.SetPoints(arr);
-	polygon.SetTransform(&gameObject->m_transform);
-}
 
-template<size_t n>
-inline void PolygonRender::Init(const std::array<Vector2f, n>& arr)
-{
-	if (n < 3) {
-		std::cout << "polygonCollider init fail" << std::endl;
-		return;
-	}
 
-	polygon.SetPoints(arr);
-	polygon.SetTransform(&gameObject->m_transform);
-}
 
 template<class C>
 inline pComponent<C*> GameObject::AddComponent()

@@ -4,6 +4,8 @@
 #include "Transform.h"
 #include "CollisionCheck.h"
 #include "RenderComponents.h"
+#include "CreateComponent.h"
+#include "Camera.h"
 
 #undef min
 
