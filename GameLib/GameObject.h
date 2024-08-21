@@ -7,7 +7,7 @@
 
 class Scene;
 
-//addcomponent는 init에서
+//addcomponent는 생성자에서 호출가능하지만 생성자에서 component 수정 불가
 class GameObject
 {
 	friend class Scene;

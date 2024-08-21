@@ -3,6 +3,7 @@
 #include "GameObject.h"
 #include "TimeSystem.h"
 #include "Physics.h"
+#include "Mathf.h"
 
 float RigidBody::gravity = 5.f;
 Vector2f RigidBody::gravityDiraction = { 0,-1 };
@@ -15,7 +16,8 @@ void RigidBody::Update()
 	gameObject->m_transform.AddLocalRotation(rotVelocity * delT);
 
 
-	AddForce(gravityDiraction * gravity * mass);
+	if(gravityWork)
+		velocity += gravityDiraction * gravity;
 	//std::cout << (velocity).x << std::endl;
 }
 
@@ -35,7 +37,8 @@ RigidBody::RigidBody() : velocity(0,0),
 						moment(5000),
 						staticFriction(0.5),
 						kineticFriction(0.3),
-						bounce(0.5)
+						bounce(0.5),
+						gravityWork(true)
 {
 }
 
@@ -67,15 +70,10 @@ void RigidBody::AddRotForce(float f)
 
 void RigidBody::AddForceByPoint(Vector2f globalPoint, Vector2f force)
 {
-	Vector2f localPos = globalPoint - gameObject->m_transform.GetGlobalPosition();
+	auto tmp = pointForce(globalPoint, force);
 
-	Vector2f normal = localPos.Normalize();
-
-	float fx = (normal.x * force.y - normal.y * force.x) * localPos.Length();
-	Vector2f fy = normal * (normal.x * force.x + normal.y * force.y);
-
-	AddForce(fy);
-	AddRotForce(fx);
+	AddForce(tmp.first);
+	AddRotForce(tmp.second);
 
 }
 
@@ -83,33 +81,14 @@ std::pair<Vector2f, float> RigidBody::pointForce(Vector2f gPoint, Vector2f force
 {
 	Vector2f localPos = gPoint - gameObject->m_transform.GetGlobalPosition();
 
-	Vector2f normal = localPos.Normalize();
+	/*Vector2f normal = localPos.Normalize();
 
 	float fx = (normal.x * force.y - normal.y * force.x) * localPos.Length();
-	Vector2f fy = normal * (normal.x * force.x + normal.y * force.y);
+	Vector2f fy = normal * (normal.x * force.x + normal.y * force.y);*/
 
-	return { fy,fx };
-}
+	float torque = Mathf::Cross(localPos, force);
 
-void RigidBody::AddForceByPointAndUpdate(Vector2f globalPoint, Vector2f force)
-{
-	Vector2f localPos = globalPoint - gameObject->m_transform.GetGlobalPosition();
-
-	Vector2f normal = localPos.Normalize();
-
-	float fx = (normal.x * force.y - normal.y * force.x) * localPos.Length();
-	Vector2f fy = normal * (normal.x * force.x + normal.y * force.y);
-
-	Vector2f tmpVel = velocity;
-	float tmpRotVel = rotVelocity;
-
-	AddForce(fy);
-	AddRotForce(fx);
-
-	Update();
-
-	velocity = tmpVel;
-	rotVelocity = tmpRotVel;
+	return { force,torque };
 }
 
 float RigidBody::GetMoment()

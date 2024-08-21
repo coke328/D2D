@@ -12,7 +12,9 @@ protected:
 	virtual void Update() override = 0;
 	virtual void Destructor() override = 0;
 public:
-	Collider() = default;
+	bool ColliderOn;
+
+	Collider();
 	virtual ~Collider() = default;
 };
 

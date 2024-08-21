@@ -1,16 +1,1 @@
-﻿  Object.cpp
-C:\d2dEngine\d2dWinApp\GameLib\Mathf.h(8,19): warning C4305: 'initializing': truncation from 'double' to 'float'
-C:\d2dEngine\d2dWinApp\demoApp\Object.cpp(62,31): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\d2dEngine\d2dWinApp\demoApp\Object.cpp(62,26): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\d2dEngine\d2dWinApp\demoApp\Object.cpp(62,21): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\d2dEngine\d2dWinApp\GameLib\vectorMap.h(42,20): warning C4267: 'return': conversion from 'size_t' to 'unsigned int', possible loss of data
-C:\d2dEngine\d2dWinApp\GameLib\CreateComponent.h(195,39): warning C4267: 'initializing': conversion from 'size_t' to 'unsigned int', possible loss of data
-C:\d2dEngine\d2dWinApp\GameLib\CreateComponent.h(197,26): warning C4267: '=': conversion from 'size_t' to 'unsigned int', possible loss of data
-C:\d2dEngine\d2dWinApp\GameLib\CreateComponent.h(199,56): warning C4267: 'argument': conversion from 'size_t' to 'unsigned int', possible loss of data
-C:\d2dEngine\d2dWinApp\GameLib\CreateComponent.h(133,49): warning C4267: '=': conversion from 'size_t' to 'unsigned int', possible loss of data
-C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.40.33807\include\utility(247,54): warning C4267: 'initializing': conversion from 'size_t' to '_Ty2', possible loss of data
-C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.40.33807\include\utility(247,54): warning C4267:         with
-C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.40.33807\include\utility(247,54): warning C4267:         [
-C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.40.33807\include\utility(247,54): warning C4267:             _Ty2=unsigned int
-C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.40.33807\include\utility(247,54): warning C4267:         ]
-  demoApp.vcxproj -> C:\d2dEngine\d2dWinApp\x64\Debug\demoApp.exe
+﻿  demoApp.vcxproj -> C:\d2dEngine\d2dWinApp\x64\Debug\demoApp.exe

@@ -3,19 +3,26 @@
 #include "Shapes.h"
 
 class Object : public GameObject {
-public:
+protected:
 	pComponent<PolygonRender*> polyRender;
 	pComponent<PolygonCollider*> polyColl;
 	pComponent<RigidBody*> rigidbody;
 
 	objectsShape shape;
 
-	Object(objectsShape _shape);
+	float inertia;
+	float bounce;
+	float staticFriction;
+	float kineticFriction;
+public:
+	
+
+	Object(objectsShape _shape, Vector2f _startPos);
 
 	virtual ~Object() = default;
 
 	void Init() override;
-	virtual void init() = 0;
+	virtual void init();
 
 	void SetRigidBody(float mass, float inertia, float bounce, float staticFriction, float kineticFriction);
 };
@@ -46,6 +53,8 @@ public:
 
 class Stone : public Object 
 {
-
+public:
+	Stone();
+	void init() override;
+	void Shoot(Vector2f force);
 };
-

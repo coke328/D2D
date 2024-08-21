@@ -43,6 +43,7 @@ public:
 	void RenderBitmap(pBitmap bitmap, Matrix matrix, D2D1_RECT_F destRect, float alpha, D2D1_RECT_F sourceRect);
 	void RenderPolygon(Shape::Polygon& poly, D2D1::ColorF color, float thickness);
 	void RenderText(std::wstring text, D2D1_RECT_F rect);
+	void RenderLine(Vector2f p1, Vector2f p2, D2D1::ColorF color, float thickness);
 
 	D2D1_SIZE_U GetScreenSize();
 	void SetBackgroundColor(D2D1::ColorF color);

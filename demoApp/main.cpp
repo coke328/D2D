@@ -10,8 +10,6 @@
 #include "MainScene.h"
 
 
-
-
 class DemoApp : public Game {
 public:
 	DemoApp() {

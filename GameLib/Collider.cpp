@@ -32,3 +32,7 @@ void PolygonCollider::Destructor()
 	polygon.Destructor();
 }
 
+Collider::Collider()
+{
+	ColliderOn = true;
+}

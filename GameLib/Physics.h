@@ -28,6 +28,8 @@ class Physics
 	Vector2f frictionForces[2];
 	float frictionRotForces[2];
 
+	const float inpulseThreshold = 0.01f;
+
 public:
 	void ProcessCollision();
 

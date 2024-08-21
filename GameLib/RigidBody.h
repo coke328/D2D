@@ -19,6 +19,7 @@ public:
 	float staticFriction;// 정지마찰
 	float kineticFriction;// 운동마찰 정지마찰력보다 작아야함
 	float bounce;//탄성
+	bool gravityWork;
 	static float gravity;
 	static Vector2f gravityDiraction;
 
@@ -27,7 +28,6 @@ public:
 	void AddRotForce(float f);
 	void AddForceByPoint(Vector2f globalPoint, Vector2f force);
 	std::pair<Vector2f, float> pointForce(Vector2f gPoint, Vector2f force);
-	void AddForceByPointAndUpdate(Vector2f globalPoint, Vector2f force);
 	float GetMoment();
 	void Reverse(float dt);
 	void Update() override;

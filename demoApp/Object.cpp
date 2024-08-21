@@ -1,17 +1,22 @@
 #include "Object.h"
 
-Object::Object(objectsShape _shape)
+Object::Object(objectsShape _shape, Vector2f _startPos)
 {
-	shape = _shape;
-}
-
-void Object::Init()
-{
+	inertia = 5;
+	bounce = 0.3;
+	staticFriction = 0.30;
+	kineticFriction = 0.30;
 
 	polyRender = AddComponent<PolygonRender>();
 	polyColl = AddComponent<PolygonCollider>();
 	rigidbody = AddComponent<RigidBody>();
 
+	shape = _shape;
+	m_transform.SetGlobalPosition(_startPos);
+}
+
+void Object::Init()
+{
 	auto& shape_ = Shapes::GetShape(shape);
 	polyRender.Get()->Init(shape_.first, shape_.second);
 	polyColl.Get()->Init(shape_.first, shape_.second);
@@ -21,7 +26,77 @@ void Object::Init()
 
 	rigidbody.Get()->CalcMoment();
 
+	switch (shape)
+	{
+	case Box_10x40:
+		SetRigidBody(5, inertia, bounce, staticFriction, kineticFriction);
+		break;
+	case Box_40x10:
+		SetRigidBody(5, inertia, bounce, staticFriction, kineticFriction);
+		break;
+	case Box_20x20:
+		SetRigidBody(5, inertia, bounce, staticFriction, kineticFriction);
+		break;
+	case Box_40x40:
+		SetRigidBody(20, inertia, bounce, staticFriction, kineticFriction);
+		break;
+	case Box_10x50:
+		SetRigidBody(6, inertia, bounce, staticFriction, kineticFriction);
+		break;
+	case Box_50x10:
+		SetRigidBody(6, inertia, bounce, staticFriction, kineticFriction);
+		break;
+	case Box_10x60:
+		SetRigidBody(7, inertia, bounce, staticFriction, kineticFriction);
+		break;
+	case Box_60x10:
+		SetRigidBody(7, inertia, bounce, staticFriction, kineticFriction);
+		break;
+	case Box_20x40:
+		SetRigidBody(10, inertia, bounce, staticFriction, kineticFriction);
+		break;
+	case Box_40x20:
+		SetRigidBody(10, inertia, bounce, staticFriction, kineticFriction);
+		break;
+	case Horn_20x20:
+		SetRigidBody(3, inertia, bounce, staticFriction, kineticFriction);
+		break;
+	case Horn_40x40:
+		SetRigidBody(12, inertia, bounce, staticFriction, kineticFriction);
+		break;
+	case SlopeLeft_20x20:
+		SetRigidBody(3, inertia, bounce, staticFriction, kineticFriction);
+		break;
+	case SlopeRight_20x20:
+		SetRigidBody(3, inertia, bounce, staticFriction, kineticFriction);
+		break;
+	case SlopeLeft_40x20:
+		SetRigidBody(6, inertia, bounce, staticFriction, kineticFriction);
+		break;
+	case SlopeRight_40x20:
+		SetRigidBody(6, inertia, bounce, staticFriction, kineticFriction);
+		break;
+	case Octagon_20x20:
+		SetRigidBody(4, inertia, bounce, staticFriction, kineticFriction);
+		break;
+	case Octagon_40x40:
+		SetRigidBody(16, inertia, bounce, staticFriction, kineticFriction);
+		break;
+	case Triangle_20:
+		SetRigidBody(4, inertia, bounce, staticFriction, kineticFriction);
+		break;
+	case Triangle_40:
+		SetRigidBody(13, inertia, bounce, staticFriction, kineticFriction);
+		break;
+	default:
+		break;
+	}
+
 	init();
+}
+
+void Object::init()
+{
 }
 
 void Object::SetRigidBody(float mass, float inertia, float bounce, float staticFriction, float kineticFriction)
@@ -51,7 +126,7 @@ void Floor::Init()
 	polyRender.Get()->lineThickness = 2;
 }
 
-MovePoly::MovePoly() : Object(objectsShape::Box_40x40) 
+MovePoly::MovePoly() : Object(objectsShape::Box_40x40, {0,0})
 {
 	speed = 50;
 	rotspeed = 300;
@@ -102,3 +177,22 @@ void MovePoly::FixedUpdate()
 
 	}
 }
+
+Stone::Stone() : Object(objectsShape::Octagon_20x20, { 0,0 })
+{
+}
+
+void Stone::init()
+{
+	m_transform.SetGlobalPosition({ -700,-350 });
+	rigidbody.Get()->gravityWork = false;
+	polyColl.Get()->ColliderOn = false;
+}
+
+void Stone::Shoot(Vector2f force)
+{
+	rigidbody.Get()->AddForce(force);
+	rigidbody.Get()->gravityWork = true;
+	polyColl.Get()->ColliderOn = true;
+}
+

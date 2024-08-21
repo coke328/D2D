@@ -240,6 +240,13 @@ void Renderer::RenderText(std::wstring text, D2D1_RECT_F rect)
 	m_pRenderTarget->DrawTextW(text.c_str(), text.length(), m_pDWriteTextFormat, rect, m_pBrush);
 }
 
+void Renderer::RenderLine(Vector2f p1, Vector2f p2, D2D1::ColorF color, float thickness)
+{
+	m_pBrush->SetColor(color);
+	m_pRenderTarget->SetTransform(ScreenMatrix());
+	m_pRenderTarget->DrawLine(p1, p2, m_pBrush, thickness);
+}
+
 D2D1_SIZE_U Renderer::GetScreenSize()
 {
 	return m_ClientSize;
