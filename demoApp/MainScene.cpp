@@ -51,12 +51,38 @@ void MainScene::SceneLoad()
 
 	//map | floor y -400 | stonePos -700,-350
 
-	
+	auto Pos = [](float x, float y) {return Vector2f( x * 1.001f , y + (y + 380) * 0.001f ); };
 
+	AddBlock(objectsShape::Box_10x40, Pos( 0,-380));
+	AddBlock(objectsShape::Box_10x40, Pos(30,-380));
+	AddBlock(objectsShape::Box_10x40, Pos(60,-380));
+	AddBlock(objectsShape::Box_10x40, Pos(90,-380));
+
+	AddBlock(objectsShape::Box_40x20, Pos(15,-350));
+	AddBlock(objectsShape::Box_40x20, Pos(75,-350));
+
+	/*AddBlock(objectsShape::Box_10x50, Pos(0,-315));
+	AddBlock(objectsShape::Box_20x20, Pos(25,-330));
+	AddBlock(objectsShape::Box_20x20, Pos(65,-330));
+	AddBlock(objectsShape::Box_10x50, Pos(90,-315));
+
+	AddBlock(objectsShape::Box_60x10, Pos(45,-315));
+
+	AddBlock(objectsShape::Box_20x20, Pos(25,-300));
+	AddBlock(objectsShape::Box_20x20, Pos(65,-300));
+
+	AddBlock(objectsShape::Box_40x20, Pos( 15,-280));
+	AddBlock(objectsShape::Box_40x20, Pos( 75,-280));
+
+	AddBlock(objectsShape::Box_20x20, Pos( 25,-260));
+	AddBlock(objectsShape::Box_20x20, Pos( 65,-260));
+
+	AddBlock(objectsShape::Box_60x10, Pos( 45,-245));*/
 }
 
 void MainScene::SceneEnd()
 {
+	
 }
 
 void MainScene::SceneUpdate()

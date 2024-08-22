@@ -1,10 +1,13 @@
 ﻿  Physics.cpp
 C:\d2dEngine\d2dWinApp\GameLib\Mathf.h(8,19): warning C4305: 'initializing': truncation from 'double' to 'float'
 C:\d2dEngine\d2dWinApp\GameLib\Physics.cpp(16,25): warning C4267: 'initializing': conversion from 'size_t' to 'unsigned int', possible loss of data
-C:\d2dEngine\d2dWinApp\GameLib\Physics.cpp(96,67): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\d2dEngine\d2dWinApp\GameLib\Physics.cpp(100,68): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\d2dEngine\d2dWinApp\GameLib\Physics.cpp(145,67): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\d2dEngine\d2dWinApp\GameLib\Physics.cpp(207,21): warning C4267: 'initializing': conversion from 'size_t' to 'unsigned int', possible loss of data
-C:\d2dEngine\d2dWinApp\GameLib\Physics.cpp(215,27): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
-C:\d2dEngine\d2dWinApp\GameLib\Physics.cpp(216,27): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
+C:\d2dEngine\d2dWinApp\GameLib\Physics.cpp(101,44): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\d2dEngine\d2dWinApp\GameLib\Physics.cpp(110,33): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\d2dEngine\d2dWinApp\GameLib\Physics.cpp(151,33): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\d2dEngine\d2dWinApp\GameLib\Physics.cpp(208,21): warning C4267: 'initializing': conversion from 'size_t' to 'unsigned int', possible loss of data
+C:\d2dEngine\d2dWinApp\GameLib\Physics.cpp(216,29): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
+C:\d2dEngine\d2dWinApp\GameLib\Physics.cpp(217,29): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
+C:\d2dEngine\d2dWinApp\GameLib\Physics.cpp(227,56): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
+C:\d2dEngine\d2dWinApp\GameLib\Physics.cpp(235,46): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
+C:\d2dEngine\d2dWinApp\GameLib\Physics.cpp(249,55): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
   GameLib.vcxproj -> C:\d2dEngine\d2dWinApp\x64\Debug\GameLib.lib

@@ -5,7 +5,7 @@
 #include "Physics.h"
 #include "Mathf.h"
 
-float RigidBody::gravity = 5.f;
+float RigidBody::gravity = 7.f;
 Vector2f RigidBody::gravityDiraction = { 0,-1 };
 
 void RigidBody::Update()
@@ -86,14 +86,14 @@ std::pair<Vector2f, float> RigidBody::pointForce(Vector2f gPoint, Vector2f force
 	float fx = (normal.x * force.y - normal.y * force.x) * localPos.Length();
 	Vector2f fy = normal * (normal.x * force.x + normal.y * force.y);*/
 
-	float torque = Mathf::Cross(localPos, force);
+	float torque = -Mathf::Cross(localPos, force);
 
 	return { force,torque };
 }
 
 float RigidBody::GetMoment()
 {
-	return angularInertia / moment;
+	return angularInertia * moment;
 }
 
 void RigidBody::Reverse(float dt)

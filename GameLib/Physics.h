@@ -25,8 +25,10 @@ class Physics
 	void ResetForces();
 	Vector2f forces[2];
 	float rotForces[2];
-	Vector2f frictionForces[2];
-	float frictionRotForces[2];
+	Vector2f frictionForces;
+	float frictionRotForces;
+	Vector2f deltaVel[2];
+	float deltaRotVel[2];
 
 	const float inpulseThreshold = 0.01f;
 

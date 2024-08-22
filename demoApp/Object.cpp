@@ -2,9 +2,9 @@
 
 Object::Object(objectsShape _shape, Vector2f _startPos)
 {
-	inertia = 5;
+	inertia = 3;
 	bounce = 0.3;
-	staticFriction = 0.30;
+	staticFriction = 0.50;
 	kineticFriction = 0.30;
 
 	polyRender = AddComponent<PolygonRender>();
@@ -126,15 +126,14 @@ void Floor::Init()
 	polyRender.Get()->lineThickness = 2;
 }
 
-MovePoly::MovePoly() : Object(objectsShape::Box_40x40, {0,0})
+MovePoly::MovePoly() : Object(objectsShape::Box_40x40, {500,0})
 {
-	speed = 50;
+	speed = 70;
 	rotspeed = 300;
 }
 
 void MovePoly::init()
 {
-	SetRigidBody(5, 2, 0.1, 0.7, 0.7);
 }
 
 void MovePoly::Update()
@@ -148,7 +147,7 @@ void MovePoly::FixedUpdate()
 		//std::cout << m_transform.GetLocalPosition().x << std::endl;
 
 		if (InputSystem::GetInstance().IsKeyPress('W')) {
-			rigidbody.Get()->AddForce({ 0,speed });
+			rigidbody.Get()->AddForce({ 0,speed + 10 });
 			//m_transform.AddGlobalPosition({ 0,speed });
 			//rigidbody.Get()->velocity = { 0,speed };
 		}

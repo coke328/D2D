@@ -44,62 +44,73 @@ void Physics::SolveContact(GameObject* objects[2], Contact& contact, RigidBody* 
 	}
 
 	float tmp = Mathf::Dot(n, cornerP[contact.cornerIdx] - currentPoint);
-	Vector2f correctionVec = n * tmp;//((tmp > 0) ? tmp : 0)
+	Vector2f correctionVec = n * tmp / (mA + mB);//((tmp > 0) ? tmp : 0)
 
-	objects[A]->m_transform.AddGlobalPosition(correctionVec * mB / (mA + mB));
-	objects[B]->m_transform.AddGlobalPosition(-correctionVec * mA / (mA + mB));
+	objects[A]->m_transform.AddGlobalPosition(correctionVec * mB);
+	objects[B]->m_transform.AddGlobalPosition(-correctionVec * mA);
+
+	if (rb[A] != nullptr) {
+		forces[A] += (correctionVec * mB) * rb[A]->mass;
+		
+	}
+		
+
+	if (rb[B] != nullptr) {
+		forces[B] -= (correctionVec * mA) * rb[B]->mass;
+		
+	}
+		
 }
 
 void Physics::CalcForce(GameObject* objects[2], RigidBody* rb[2], Contact& contact, Vector2f n)
 {
+	unsigned int A = (unsigned int)contact.pointObject;
+	unsigned int B = (unsigned int)!contact.pointObject;
+
 	float bounce = CalcBounce(rb[0]->bounce, rb[1]->bounce);
 	float staticFriction = CalcFriction(rb[0]->staticFriction, rb[1]->staticFriction);
 	float kineticFriction = CalcFriction(rb[0]->kineticFriction, rb[1]->kineticFriction);
 
-	Vector2f r0 = objects[0]->m_transform.GetGlobalPosition() - contact.CollisionPoint;
-	Vector2f r1 = objects[1]->m_transform.GetGlobalPosition() - contact.CollisionPoint;
+	Vector2f rA = objects[A]->m_transform.GetGlobalPosition() - contact.CollisionPoint;
+	Vector2f rB = objects[B]->m_transform.GetGlobalPosition() - contact.CollisionPoint;
 
-	float I0 = rb[0]->moment * rb[0]->angularInertia;
-	float I1 = rb[1]->moment * rb[1]->angularInertia;
+	float IA = rb[A]->GetMoment();
+	float IB = rb[B]->GetMoment();
 
 
 	Vector2f tangent = { n.y,-n.x };
-	Vector2f relativeVel = (rb[1]->velocity + Vector2f(rb[1]->rotVelocity * r1.y, -rb[1]->rotVelocity * r1.x))
-		- (rb[0]->velocity + Vector2f(rb[0]->rotVelocity * r0.y, -rb[0]->rotVelocity * r0.x));
-	float mag = (1 / rb[0]->mass + 1 / rb[1]->mass +
-		Mathf::Square(Mathf::Cross(r0, n)) / I0 + Mathf::Square(Mathf::Cross(r1, n)) / I1);
-	float normalForce = Mathf::Dot(n, relativeVel) / mag;
+	Vector2f relativeVel = (rb[B]->velocity + Vector2f(rb[B]->rotVelocity * rB.y, -rb[B]->rotVelocity * rB.x))
+		- (rb[A]->velocity + Vector2f(rb[A]->rotVelocity * rA.y, -rb[A]->rotVelocity * rA.x));
+	float mag = (1 / rb[A]->mass + 1 / rb[B]->mass +
+		Mathf::Square(Mathf::Cross(rA, n)) / IA + Mathf::Square(Mathf::Cross(rB, n)) / IB);
+	float normalVel = Mathf::Dot(n, relativeVel);
+	float normalForce = normalVel / mag;
 	float tangentForce = Mathf::Dot(tangent, relativeVel) / mag;
 	Vector2f J = n * normalForce * -(bounce + 1);
 	
 
-	forces[0] -= J;
-	forces[1] += J;
-	rotForces[0] += Mathf::Cross(r0, J);
-	rotForces[1] -= Mathf::Cross(r1, J);
+	forces[A] -= J;
+	forces[B] += J;
+	rotForces[A] += Mathf::Cross(rA, J);
+	rotForces[B] -= Mathf::Cross(rB, J);
 
 	int sign = (tangentForce >= 0) ? 1 : -1;
+	int a = (contact.pointObject) ? 1 : -1;
+	//std::pair<Vector2f, float> force;
+	if (abs(tangentForce) < staticFriction * abs(normalVel)) {
+		Vector2f tanJ = tangent * tangentForce * a;
+		frictionForces += tanJ;
+		//frictionRotForces += Mathf::Cross(r0, tanJ) / I0;
+		//frictionRotForces += -Mathf::Cross(r1, tanJ) / I1;
 
-	std::pair<Vector2f, float> force;
-	if (tangentForce * sign <= staticFriction * abs(normalForce)) {
-		force = rb[0]->pointForce(contact.CollisionPoint, tangent * tangentForce);
-		frictionForces[0] += force.first;
-		frictionRotForces[0] += force.second;
-
-		force = rb[1]->pointForce(contact.CollisionPoint, -tangent * tangentForce);
-		frictionForces[1] += force.first;
-		frictionRotForces[1] += force.second;
 	}
 	else {
 		float f = kineticFriction * normalForce;
 
-		force = rb[0]->pointForce(contact.CollisionPoint, tangent * f * sign);
-		frictionForces[0] += force.first;
-		frictionRotForces[0] += force.second;
-
-		force = rb[1]->pointForce(contact.CollisionPoint, -tangent * f * sign);
-		frictionForces[1] += force.first;
-		frictionRotForces[1] += force.second;
+		Vector2f tanJ = tangent * f * a;
+		frictionForces += tanJ;
+		//frictionRotForces += Mathf::Cross(r0, tanJ) / I0;
+		//frictionRotForces += -Mathf::Cross(r1, tanJ) / I1;
 	}
 }
 
@@ -114,41 +125,32 @@ void Physics::CalcHalfForce(bool gotrb, GameObject* objects[2], RigidBody* rb[2]
 
 	Vector2f rA = objects[A]->m_transform.GetGlobalPosition() - contact.CollisionPoint;
 
-	float IA = rb[A]->moment * rb[A]->angularInertia;
+	float IA = rb[A]->GetMoment();
 
-	Vector2f tangent = { -n.y,n.x };
+	Vector2f tangent = { n.y,-n.x };
 	Vector2f relativeVel = (rb[A]->velocity + Vector2f(rb[A]->rotVelocity * rA.y, -rb[A]->rotVelocity * rA.x));
 	float mag = (1 / rb[A]->mass + Mathf::Square(Mathf::Cross(rA, n)) / IA);
-	float normalForce = Mathf::Dot(n, relativeVel) / mag;
-	float tangentForce = Mathf::Dot(tangent, relativeVel) / mag;
+	float normalVel = Mathf::Dot(n, relativeVel);
+	float normalForce = normalVel / mag;
+	float tangentVel = Mathf::Dot(tangent, relativeVel);
+	float tangentForce = tangentVel / mag;
 	Vector2f J = n * normalForce * -(bounce + 1);
 
 	forces[A] += J;
 	rotForces[A] -= Mathf::Cross(rA, J);
-	
-	std::pair<Vector2f, float> force;
 
 	int sign = (tangentForce >= 0) ? 1 : -1;
-
-	if (tangentForce * sign <= staticFriction * abs(normalForce)) {
-		force = rb[A]->pointForce(contact.CollisionPoint, -tangent * tangentForce);
-		frictionForces[A] += force.first;
-		frictionRotForces[A] += force.second;
-
-		/*Vector2f tmp = -tangent * tangentForce;
-		forces[A] += tmp;
-		rotForces[A] -= Mathf::Cross(rA, tmp);*/
+	if (abs(tangentForce) < staticFriction * abs(normalVel)) {
+		Vector2f tanJ = -tangent * tangentForce;
+		frictionForces += tanJ;
+		frictionRotForces += -Mathf::Cross(rA, tanJ) / IA;
 	}
 	else {
 		float f = kineticFriction * normalForce;
-		
-		force = rb[A]->pointForce(contact.CollisionPoint, tangent * f * sign);
-		frictionForces[A] += force.first;
-		frictionRotForces[A] += force.second;
 
-		//Vector2f tmp = tangent * f * sign;
-		//forces[A] += tmp;
-		//rotForces[A] -= Mathf::Cross(rA, tmp);
+		Vector2f tanJ = tangent * f * sign;
+		frictionForces += tanJ;
+		frictionRotForces += -Mathf::Cross(rA, tanJ) / IA;
 	}
 }
 
@@ -173,10 +175,9 @@ void Physics::ResetForces()
 	forces[1] = { 0,0 };
 	rotForces[0] = 0;
 	rotForces[1] = 0;
-	frictionForces[0] = { 0,0 };
-	frictionForces[1] = { 0,0 };
-	frictionRotForces[0] = 0;
-	frictionRotForces[1] = 0;
+	frictionForces = { 0,0 };
+	frictionRotForces = 0;
+	deltaVel[0] = { 0,0 };
 }
 
 Vector2f Physics::Force(Vector2f force, float mass)
@@ -186,7 +187,7 @@ Vector2f Physics::Force(Vector2f force, float mass)
 
 float Physics::AngularForce(float force, float angularInertia, float moment)
 {
-	return force / angularInertia / moment;
+	return force / (angularInertia * moment);
 }
 
 void Physics::ProcessCollision()
@@ -212,23 +213,46 @@ void Physics::ProcessCollision()
 			SolveContact(objects, col->contacts[i], rb, col->polys);
 		}
 
-		forces[0] = forces[0] / size;
-		forces[1] = forces[1] / size;
-		rotForces[0] = rotForces[0] / size;
-		rotForces[1] = rotForces[1] / size;
+		forces[0] = (forces[0]) / size;
+		forces[1] = (forces[1]) / size;
+		rotForces[0] = (rotForces[0]) / size;
+		rotForces[1] = (rotForces[1]) / size;
 
-		if (rb[0] != nullptr) {
+		
+
+		if (rb[0] != nullptr && rb[1] != nullptr) {
 			rb[0]->AddForce(forces[0]);
 			rb[0]->AddRotForce(rotForces[0]);
-			rb[0]->AddForce(frictionForces[0]);
-			rb[0]->AddRotForce(frictionRotForces[0]);
-		}
-		if (rb[1] != nullptr) {
+
+			Vector2f tmpVel = (-frictionForces / rb[0]->mass) / size;
+			float tmpRot = -frictionRotForces / size;
+			rb[0]->velocity += tmpVel;
+			rb[0]->rotVelocity += tmpRot;
+
 			rb[1]->AddForce(forces[1]);
-			rb[1]->AddRotForce(rotForces[0]);
-			rb[1]->AddForce(frictionForces[1]);
-			rb[1]->AddRotForce(frictionRotForces[1]);
+			rb[1]->AddRotForce(rotForces[1]);
+
+			tmpVel = (frictionForces / rb[1]->mass) / size;
+			tmpRot = frictionRotForces / size;
+			rb[1]->velocity += tmpVel;
+			rb[1]->rotVelocity += tmpRot;
 		}
+		else if (rb[0] == nullptr && rb[1] == nullptr) {
+
+		}
+		else {
+			int A = int(rb[0] == nullptr);
+
+			rb[A]->AddForce(forces[A]);
+			rb[A]->AddRotForce(rotForces[A]);
+
+			Vector2f tmpVel = (frictionForces / rb[A]->mass) / size;
+			float tmpRot = frictionRotForces / size;
+			rb[A]->velocity += tmpVel;
+			rb[A]->rotVelocity += tmpRot;
+		}
+
+		
 
 		Collision::Pop();
 	}
