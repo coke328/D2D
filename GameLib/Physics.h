@@ -23,12 +23,10 @@ class Physics
 	float CalcBounce(float b1, float b2);
 
 	void ResetForces();
-	Vector2f forces[2];
+	Vector2f forces;
 	float rotForces[2];
 	Vector2f frictionForces;
-	float frictionRotForces;
-	Vector2f deltaVel[2];
-	float deltaRotVel[2];
+	float frictionRotForces[2];
 
 	const float inpulseThreshold = 0.01f;
 

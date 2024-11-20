@@ -112,7 +112,7 @@ void Object::SetRigidBody(float mass, float inertia, float bounce, float staticF
 void Floor::Init()
 {
 	Vector2f* tmp = new Vector2f[4];
-	tmp[0] = { 1200,-400 };
+	tmp[0] = { 1200,-450 };
 	tmp[1] = { -1200,-400 };
 	tmp[2] = { -1200,-600 };
 	tmp[3] = { 1200,-600 };

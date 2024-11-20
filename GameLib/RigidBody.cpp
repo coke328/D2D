@@ -5,7 +5,7 @@
 #include "Physics.h"
 #include "Mathf.h"
 
-float RigidBody::gravity = 7.f;
+float RigidBody::gravity = 3.f;
 Vector2f RigidBody::gravityDiraction = { 0,-1 };
 
 void RigidBody::Update()
